@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import Home from './Home';
-import Dashboard from './Dashboard';
-import AddActivity from './AddActivity';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import AddActivity from './pages/AddActivity';
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
       </header>
       {/* <Home /> */}
       {/* <Dashboard /> */}
-      <AddActivity />
+      {/* <AddActivity /> */}
     </div>
   );
 }
