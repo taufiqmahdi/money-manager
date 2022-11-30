@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Formik, Field } from "formik";
 import {
   Box,
@@ -9,10 +9,37 @@ import {
   FormLabel,
   FormErrorMessage,
   Input,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 
 const Home = () => {
+  const login = (values) => {
+    // console.log(values);
+    const email = values.email;
+    const password = values.password;
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      email: email,
+      password: password,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:4001/login", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+
+  };
+
   return (
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md" w={64}>
@@ -20,11 +47,9 @@ const Home = () => {
           initialValues={{
             email: "",
             password: "",
-            rememberMe: false
+            rememberMe: false,
           }}
-          onSubmit={(values) => {
-            alert(JSON.stringify(values, null, 2));
-          }}
+          onSubmit={(values) => login(values)}
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
@@ -76,7 +101,7 @@ const Home = () => {
         </Formik>
       </Box>
     </Flex>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
