@@ -10,7 +10,6 @@ import {
   FormLabel,
   Button,
   CircularProgress,
-  Text,
   Link,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
@@ -19,7 +18,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const LoginNew = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isLogin, setIsLogin] = useState(true);
   // const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
@@ -172,7 +171,7 @@ const LoginNew = () => {
     }
 
     // console.log(user);
-  }, [isLoggedIn, isError, user, navigate, from]); //, token]);
+  }, [isError, user, navigate, from]); //, token]);
 
   return (
     <Flex bgColor="blue.100" h="100vh" align="center" justify="center" >

@@ -107,6 +107,7 @@ const AddActivity = () => {
         type: "Outcome",
       });
     }
+    // eslint-disable-next-line
   }, [income.activity]);
 
   return (

@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import Home from "./pages/Unused/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AddActivity from "./pages/Dashboard/Features/AddActivity";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

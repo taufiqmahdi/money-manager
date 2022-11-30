@@ -69,6 +69,7 @@ const Dashboard = () => {
     if (user) { //|| token) {
       getUserData();
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

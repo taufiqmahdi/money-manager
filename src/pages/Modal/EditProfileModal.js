@@ -1,6 +1,5 @@
 import {
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -12,8 +11,6 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useMemo } from "react";
 import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
@@ -89,11 +86,11 @@ const EditProfileModal = () => {
       // data = JSON.parse(data);
       // console.log('a')
       // setUser(data);
-      // return data;
+      return data;
       // setIsLoggedIn(true);
       // localStorage.setItem("user", JSON.stringify(data));
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       // setIsError(true);
     }
   };

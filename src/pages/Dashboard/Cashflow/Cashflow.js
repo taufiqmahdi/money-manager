@@ -1,6 +1,4 @@
 import {
-  Avatar,
-  Button,
   Flex,
   Heading,
   Table,
@@ -10,13 +8,12 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Outlet, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 const Cashflow = () => {
   const [user] = useOutletContext();
@@ -128,6 +125,7 @@ const Cashflow = () => {
     // setCashflowContent(() => getCashflowContent);
     // console.log("data: ", data);
     // console.log("cashflow data: ", data);
+    // eslint-disable-next-line
   }, []);
 
   return (
