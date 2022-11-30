@@ -56,6 +56,7 @@ function App() {
     {
       path: "login",
       element: <LoginNew />,
+      errorElement: <ErrorPage />,
       // loader: <RequireAuth />,
     },
     // {
