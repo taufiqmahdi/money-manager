@@ -9,6 +9,10 @@ import {
   Th,
   Td,
   TableContainer,
+  Select,
+  Switch,
+  Input,
+  FormLabel,
 } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
@@ -21,53 +25,97 @@ const Cashflow = () => {
 
   const [cashflowContent, setCashflowContent] = useState([{}]);
 
-  // console.log('awa', cashflowContent)
+  const getDate = () => {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
 
-  // const getCashflowContent = async () => {
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("Content-Type", "application/json");
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
 
-  //   // var raw = JSON.stringify({
-  //   //   email: user.email,
-  //   //   token: user.token,
-  //   // });
+    const today = year + "-" + month + "-" + day;
+    const firstDayOfThisMonth = year + "-" + month + "-01";
 
-  //   var requestOptions = {
-  //     method: "GET",
-  //     redirect: "follow",
-  //   };
+    // month = date.toLocaleString("en-US", { month: "long" });
+    // console.log('date', day, 'month', month, 'year', year)
+    // console.log(today)
+    return { firstDayOfThisMonth, today };
+  };
 
-  //   const response = await fetch("http://localhost:4001/wtf", requestOptions)
-  //   // response.then(console.log(response.json()))
-  //   const data = await response.json();
-  //   // setCashflowContent(data);
-  //   return data;
+  const { firstDayOfThisMonth, today } = getDate();
 
-  //   // try {
-  //   //   let data = await response.json();
-  //   //   // console.log(data[0]);
-  //   //   // setUser(data);
-  //   //   // localStorage.setItem("user", JSON.stringify(data));
-  //   //   // setIsLoggedIn(true);
-  //   //   return data;
-  //   //   // setCashflowContent(data);
-  //   //   // console.log('data: ', data);
-  //   //   // console.log('cashflow data: ', cashflowContent);
-  //   // } catch (error) {
-  //   //   // setIsError(true);
-  //   //   console.log(error);
-  //   // }
-  // };
+  const [initialFilterState, setInitialFilterState] = useState({
+    startDate: firstDayOfThisMonth,
+    endDate: today,
+  });
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setInitialFilterState({
+      ...initialFilterState,
+      [e.target.name]: value,
+    });
+
+    const months = {
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12",
+    };
+  };
+
+  const months = {
+    January: "01",
+    February: "02",
+    March: "03",
+    April: "04",
+    May: "05",
+    June: "06",
+    July: "07",
+    August: "08",
+    September: "09",
+    October: "10",
+    November: "11",
+    December: "12",
+  };
+
+  const filterCashflow = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      email: user.email,
+      token: user.token,
+      startDate: initialFilterState.startDate,
+      endDate: initialFilterState.endDate,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      "http://localhost:4001/filtercashflow",
+      requestOptions
+    );
+    const data = await response.json();
+    setCashflowContent(data);
+    // return data;
+  };
 
   useEffect(() => {
-    // let data = getCashflowContent();
-    // const getData = async () => {
-    //   return await getCashflowContent();
-    // };
-
-    // console.log('getData: ', getData())
-    // const data = getData();
-
     const getCashflowContent = async () => {
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -88,45 +136,14 @@ const Cashflow = () => {
         "http://localhost:4001/cashflow",
         requestOptions
       );
-      // response.then(console.log(response.json()))
       const data = await response.json();
-      // console.log('data', data)
-      // console.log('deati', cashflowContent[0].detail)
       setCashflowContent(data);
-      // console.log(cashflowContent[1].id)
-      // return data;
-
-      // try {
-      //   let data = await response.json();
-      //   // console.log(data[0]);
-      //   // setUser(data);
-      //   // localStorage.setItem("user", JSON.stringify(data));
-      //   // setIsLoggedIn(true);
-      //   return data;
-      //   // setCashflowContent(data);
-      //   // console.log('data: ', data);
-      //   // console.log('cashflow data: ', cashflowContent);
-      // } catch (error) {
-      //   // setIsError(true);
-      //   console.log(error);
-      // }
     };
-
-    getCashflowContent();
-
-    // let data = getCashflowContent();
-
-    // console.log('data:', data)
-
-    // console.log('data: ', data)
-    // setCashflowContent(data);
-    // console.log(getCashflowContent())
-
-    // setCashflowContent(() => getCashflowContent);
-    // console.log("data: ", data);
-    // console.log("cashflow data: ", data);
-    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    filterCashflow();
+  }, [initialFilterState]);
 
   return (
     <Flex direction="column">
@@ -144,6 +161,72 @@ const Cashflow = () => {
         borderRadius="8px"
         direction="column"
       >
+        <Flex className="filter-cashflow" mb="25px">
+          <Flex direction="column">
+            <FormLabel>Start Date</FormLabel>
+            <Input
+              placeholder="Select Date and Time"
+              value={initialFilterState.startDate}
+              onChange={handleChange}
+              size="md"
+              id="startDate"
+              name="startDate"
+              type="date"
+              w="fit-content"
+              mr="25px"
+            />
+          </Flex>
+          <Flex direction="column">
+            <FormLabel>End Date</FormLabel>
+            <Input
+              placeholder="Select Date and Time"
+              id="endDate"
+              name="endDate"
+              value={initialFilterState.endDate}
+              onChange={handleChange}
+              size="md"
+              type="date"
+              w="fit-content"
+            />
+          </Flex>
+          {/* <Flex mr="25px" direction="column">
+            Year
+            <Select
+              variant="flushed"
+              id="year"
+              name="year"
+              value={initialFilterState.year}
+              onChange={handleChange}
+            >
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+            </Select>
+          </Flex>
+          <Flex direction="column">
+            Month
+            <Select
+              variant="flushed"
+              id="month"
+              name="month"
+              value={initialFilterState.month}
+              onChange={handleChange}
+            >
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </Select>
+          </Flex> */}
+        </Flex>
         <TableContainer>
           <Table variant="simple">
             {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}

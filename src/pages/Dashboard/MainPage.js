@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Flex, Button, Text, Heading } from "@chakra-ui/react";
 import { Link, useOutletContext } from "react-router-dom";
 
 const MainPage = () => {
   // const user = user
-  const [user] = useOutletContext();
+  const [user, getUserData] = useOutletContext();
   // console.log(user)
 
+  useEffect(() => {
+    getUserData();
+    // eslint-disable-next-line
+  }, [])
+  
   return (
     <Flex direction="column">
       <Flex mb="25px">

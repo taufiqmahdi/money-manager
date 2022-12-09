@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   CircularProgress,
+  Select,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -26,14 +27,14 @@ const AddActivity = () => {
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
-  
+
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
 
-    const today =  year + "-" + month + "-" + day;
+    const today = year + "-" + month + "-" + day;
 
-    return today
-  }
+    return today;
+  };
 
   const today = getDate();
 
@@ -158,14 +159,55 @@ const AddActivity = () => {
           <FormLabel>
             {isIncome ? "Tipe Pemasukan Khusus" : "Tipe Pengeluaran Khusus"}
           </FormLabel>
-          <Input
+          {isIncome ? (
+            <>
+            <Select
+              placeholder="Select option"
+              mb={inputState.spesificType === 'Other Income' ? '0px' : '15px' }
+              id="spesificType"
+              name="spesificType"
+              value={inputState.spesificType}
+              onChange={handleChange}
+            >
+              <option value="Given">Given</option>
+              <option value="Monthly Allowance">Monthly Allowance</option>
+              <option value="Other Income">Other Income</option>
+            </Select>
+            {inputState.spesificType === 'Other Income' ? 
+            <Input 
+            mb="15px"
+             />
+             : null}
+            </>
+          ) : (
+            <Select
+              placeholder="Select option"
+              mb="15px"
+              id="spesificType"
+              name="spesificType"
+              value={inputState.spesificType}
+              onChange={handleChange}
+            >
+              <option value="Food">Food</option>
+              <option value="Gas">Gas</option>
+              <option value="Coffee">Coffee</option>
+              <option value="Needs">Needs</option>
+              <option value="Giving">Giving</option>
+              <option value="Subscription">Subscription</option>
+              <option value="Sport">Sport</option>
+              <option value="Debt">Debt</option>
+              <option value="Online Shopping">Online Shopping</option>
+              <option value="Other Outcome">Other Outcome</option>
+            </Select>
+          )}
+          {/* <Input
             id="spesificType"
             name="spesificType"
             type="text"
             value={inputState.spesificType}
             onChange={handleChange}
             mb="15px"
-          />
+          /> */}
         </FormControl>
         <FormControl>
           <FormLabel>Deskripsi Tambahan</FormLabel>
