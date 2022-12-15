@@ -9,8 +9,6 @@ import {
   Th,
   Td,
   TableContainer,
-  Select,
-  Switch,
   Input,
   FormLabel,
 } from "@chakra-ui/react";
@@ -57,36 +55,36 @@ const Cashflow = () => {
       [e.target.name]: value,
     });
 
-    const months = {
-      January: "01",
-      February: "02",
-      March: "03",
-      April: "04",
-      May: "05",
-      June: "06",
-      July: "07",
-      August: "08",
-      September: "09",
-      October: "10",
-      November: "11",
-      December: "12",
-    };
+    // const months = {
+    //   January: "01",
+    //   February: "02",
+    //   March: "03",
+    //   April: "04",
+    //   May: "05",
+    //   June: "06",
+    //   July: "07",
+    //   August: "08",
+    //   September: "09",
+    //   October: "10",
+    //   November: "11",
+    //   December: "12",
+    // };
   };
 
-  const months = {
-    January: "01",
-    February: "02",
-    March: "03",
-    April: "04",
-    May: "05",
-    June: "06",
-    July: "07",
-    August: "08",
-    September: "09",
-    October: "10",
-    November: "11",
-    December: "12",
-  };
+  // const months = {
+  //   January: "01",
+  //   February: "02",
+  //   March: "03",
+  //   April: "04",
+  //   May: "05",
+  //   June: "06",
+  //   July: "07",
+  //   August: "08",
+  //   September: "09",
+  //   October: "10",
+  //   November: "11",
+  //   December: "12",
+  // };
 
   const filterCashflow = async () => {
     var myHeaders = new Headers();
@@ -116,33 +114,34 @@ const Cashflow = () => {
   };
 
   useEffect(() => {
-    const getCashflowContent = async () => {
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
+    // const getCashflowContent = async () => {
+    //   var myHeaders = new Headers();
+    //   myHeaders.append("Content-Type", "application/json");
 
-      var raw = JSON.stringify({
-        email: user.email,
-        token: user.token,
-      });
+    //   var raw = JSON.stringify({
+    //     email: user.email,
+    //     token: user.token,
+    //   });
 
-      var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow",
-      };
+    //   var requestOptions = {
+    //     method: "POST",
+    //     headers: myHeaders,
+    //     body: raw,
+    //     redirect: "follow",
+    //   };
 
-      const response = await fetch(
-        "http://localhost:4001/cashflow",
-        requestOptions
-      );
-      const data = await response.json();
-      setCashflowContent(data);
-    };
+    //   const response = await fetch(
+    //     "http://localhost:4001/cashflow",
+    //     requestOptions
+    //   );
+    //   const data = await response.json();
+    //   setCashflowContent(data);
+    // };
   }, []);
 
   useEffect(() => {
     filterCashflow();
+    // eslint-disable-next-line
   }, [initialFilterState]);
 
   return (
