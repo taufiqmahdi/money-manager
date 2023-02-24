@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const API_URL = "http://localhost:4001/api/users/";
   const navigate = useNavigate();
   // const location = useLocation();
   // const [user, setUser] = useState(location.state)
@@ -37,7 +38,7 @@ const Dashboard = () => {
       redirect: "follow",
     };
 
-    const response = await fetch("http://localhost:4001/me", requestOptions);
+    const response = await fetch(API_URL + "user", requestOptions);
 
     try {
       let data = await response.json();
@@ -60,13 +61,15 @@ const Dashboard = () => {
       navigate("/login");
     }
 
-    if (!user) { //&& !token) {
+    if (!user) {
+      //&& !token) {
       navigate("/login");
     }
   }, [user, navigate, isError]); //, token]);
 
   useEffect(() => {
-    if (user) { //|| token) {
+    if (user) {
+      //|| token) {
       getUserData();
     }
     // eslint-disable-next-line
@@ -189,7 +192,7 @@ const Dashboard = () => {
           p="25px"
         >
           <Flex fontSize="xl" fontWeight="bold">
-            Hello, {user.firstName + ' ' + user.lastName}
+            Hello, {user.firstName + " " + user.lastName}
           </Flex>
           <Flex align="center">
             <Flex
@@ -203,10 +206,10 @@ const Dashboard = () => {
             >
               <BellIcon w="25px" h="25px" />
             </Flex>
-            <Flex mr="15px">{user.firstName + ' ' + user.lastName}</Flex>
+            <Flex mr="15px">{user.firstName + " " + user.lastName}</Flex>
             <Flex>
               <Avatar
-                name={user.firstName + ' ' + user.lastName}
+                name={user.firstName + " " + user.lastName}
                 // src="https://bit.ly/dan-abramov"
                 borderRadius="8px"
                 h="45px"

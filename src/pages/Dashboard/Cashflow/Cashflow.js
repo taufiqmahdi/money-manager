@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const Cashflow = () => {
+  const API_URL = "http://localhost:4001/api/cashflows/";
   const [user] = useOutletContext();
   // console.log(user)
 
@@ -104,10 +105,7 @@ const Cashflow = () => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      "http://localhost:4001/filtercashflow",
-      requestOptions
-    );
+    const response = await fetch(API_URL + "cashflow", requestOptions);
     const data = await response.json();
     setCashflowContent(data);
     // return data;
@@ -117,19 +115,16 @@ const Cashflow = () => {
     // const getCashflowContent = async () => {
     //   var myHeaders = new Headers();
     //   myHeaders.append("Content-Type", "application/json");
-
     //   var raw = JSON.stringify({
     //     email: user.email,
     //     token: user.token,
     //   });
-
     //   var requestOptions = {
     //     method: "POST",
     //     headers: myHeaders,
     //     body: raw,
     //     redirect: "follow",
     //   };
-
     //   const response = await fetch(
     //     "http://localhost:4001/cashflow",
     //     requestOptions
@@ -243,7 +238,7 @@ const Cashflow = () => {
             <Tbody>
               {/* <Tr> */}
               {cashflowContent.map((cashflowContent) => (
-                <Tr key={[cashflowContent.id]}>
+                <Tr key={[cashflowContent._id]}>
                   <Td className="detail">{cashflowContent.detail}</Td>
                   <Td className="cashflowType">
                     {cashflowContent.cashflowType}
