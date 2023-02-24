@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const EditProfileModal = () => {
+  const API_URL = "http://localhost:4001/api/users/"
   const [isModalOpen, setIsModalOpen, user, getUserData] = //token, getUserData] =
     useOutletContext();
   const handleModalOpenChange = (value) => {
@@ -76,7 +77,7 @@ const EditProfileModal = () => {
       redirect: "follow",
     };
 
-    const response = await fetch("http://localhost:4001/edit", requestOptions);
+    const response = await fetch(API_URL + "edit", requestOptions);
 
     try {
       let data = await response.json();

@@ -15,14 +15,17 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const LoginNew = () => {
+const Login = () => {
+  const API_URL = "http://localhost:4001/api/users/";
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let from = location.state?.from?.pathname || "/";
+
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isLogin, setIsLogin] = useState(true);
-  // const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
-  // const [isNavigated, setIsNavigated] = useState(false)
 
   const initialInputState = {
     email: "",
@@ -41,12 +44,6 @@ const LoginNew = () => {
       [e.target.name]: value,
     });
   };
-
-  const location = useLocation();
-  // console.log(location.state)
-  const navigate = useNavigate();
-
-  let from = location.state?.from?.pathname || "/";
 
   const register = async () => {
     var myHeaders = new Headers();
@@ -68,7 +65,7 @@ const LoginNew = () => {
     };
 
     const response = await fetch(
-      "http://localhost:4001/register",
+      API_URL,
       requestOptions
     );
 
@@ -82,10 +79,6 @@ const LoginNew = () => {
   };
 
   const login = async () => {
-    // console.log(e)
-    // const email = email;
-    // const password = password;
-
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -101,35 +94,18 @@ const LoginNew = () => {
       redirect: "follow",
     };
 
-    const response = await fetch("http://localhost:4001/login", requestOptions);
-    // .then((response) => response.text())
-    // .then((result) => console.log(result))
-    // .catch((error) => console.log("error", error));
+    const response = await fetch(
+      API_URL + "login",
+      requestOptions
+    );
 
-    // const data = async () => {
     try {
       let data = await response.json();
-      // console.log('data:', data)
-      // console.log(JSON.stringify(data))
-      // console.log(data.token)
-      // // data = JSON.stringify(data);
-      // console.log(data)
-      // data = JSON.parse(data);
-      // console.log('a')
-      // setUser(data);
-      // console.log(isLoggedIn)
-      // // return data;
-      // setIsLoggedIn(true);
-      // console.log(isLoggedIn)
-
       localStorage.setItem("user", JSON.stringify(data));
       return data;
-      // localStorage.setItem("token", JSON.stringify(data.token));
     } catch (error) {
-      // console.log(error);
       setIsError(true);
     }
-    // };
   };
 
   const handleSubmit = async (e) => {
@@ -143,10 +119,6 @@ const LoginNew = () => {
     }
     const data = await register();
     setUser(data);
-    // console.log('isLoggedIn before:', isLoggedIn);
-    // return data;
-    // setIsLoggedIn(true);
-    // console.log('isLoggedIn after:', isLoggedIn);
     setIsLoading(false);
   };
 
@@ -156,31 +128,20 @@ const LoginNew = () => {
     }
 
     if (!user) {
-      //|| !token) {
-      // console.log('no user')
     }
 
-    if (
-      // isLoggedIn ||
-      user
-    ) {
-      //&& token) {
-      // console.log('ada user')
-      //|| user) {
+    if (user) {
       navigate(from, { replace: true });
     }
-
-    // console.log(user);
-  }, [isError, user, navigate, from]); //, token]);
+  }, [isError, user, navigate, from]);
 
   return (
-    <Flex bgColor="blue.100" h="100vh" align="center" justify="center" >
+    <Flex bgColor="blue.100" h="100vh" align="center" justify="center">
       <Flex
         bgColor="white"
         maxWidth="1000px"
         p="50px"
         maxH="500px"
-        // h="100%"
         borderRadius="8px"
       >
         <Flex mr="50px">
@@ -203,10 +164,9 @@ const LoginNew = () => {
             <Image src="icon.png" alt="icon-mm" maxH="50px" />
             <Heading size="md">Money Manager</Heading>
           </Box>
-          {/* {(!from) ? <Box textColor='red.400' mb='8px' w=''>You need to login first to access this page</Box> : null   }  */}
           <Box display={isLogin ? "block" : "none"} className="login-form">
             <form onSubmit={handleSubmit}>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={isError}>
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
@@ -295,7 +255,6 @@ const LoginNew = () => {
                   placeholder="*******"
                   onChange={handleChange}
                 />
-                <FormErrorMessage>Wrong Email / Password</FormErrorMessage>
               </FormControl>
               <Button
                 width="full"
@@ -346,4 +305,4 @@ const LoginNew = () => {
   );
 };
 
-export default LoginNew;
+export default Login;
