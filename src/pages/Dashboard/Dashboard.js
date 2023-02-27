@@ -72,6 +72,8 @@ const Dashboard = () => {
       //|| token) {
       getUserData();
     }
+    
+    document.title = "Money Manager";
     // eslint-disable-next-line
   }, []);
 

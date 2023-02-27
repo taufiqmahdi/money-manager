@@ -123,6 +123,10 @@ const Login = () => {
   };
 
   useEffect(() => {
+    document.title = "Login - Money Manager"
+ }, []);
+
+  useEffect(() => {
     if (isError) {
       <FormErrorMessage>Wrong Email / Password</FormErrorMessage>;
     }
