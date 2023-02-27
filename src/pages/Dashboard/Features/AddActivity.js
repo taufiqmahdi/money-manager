@@ -21,6 +21,7 @@ const AddActivity = () => {
   const [user] = useOutletContext();
   const income = useParams();
   const navigate = useNavigate();
+  const API_URL = "http://localhost:4001/api/cashflows/";
 
   const getDate = () => {
     var date = new Date();
@@ -38,13 +39,12 @@ const AddActivity = () => {
 
   const today = getDate();
 
-  // var today = year + "-" + month + "-" + day;
-
   const initialInputState = {
     detail: "",
     amount: "",
     type: "Income",
     spesificType: "",
+    spesificTypeOther: "",
     description: "",
     date: today,
   };
@@ -67,7 +67,11 @@ const AddActivity = () => {
       email: user.email,
       detail: inputState.detail,
       cashflowType: inputState.type,
-      cashflowTypeDetail: inputState.spesificType,
+      cashflowTypeDetail: inputState.spesificTypeOther
+        ? isIncome
+          ? "Other Income - " + inputState.spesificTypeOther
+          : "Other Outcome - " + inputState.spesificTypeOther
+        : inputState.spesificType,
       amount: inputState.amount,
       description: inputState.description,
       date: inputState.date,
@@ -81,12 +85,8 @@ const AddActivity = () => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      "http://localhost:4001/insert",
-      requestOptions
-    );
+    const response = await fetch(API_URL + "set", requestOptions);
     const data = await response.json();
-    // console.log('fx:', data);
     return data;
   };
 
@@ -94,8 +94,6 @@ const AddActivity = () => {
     e.preventDefault();
     setIsLoading(true);
     await insertCashflow();
-    // const data = await insertCashflow();
-    // console.log('hs:', data)
     setIsLoading(false);
     navigate("/cashflow");
   };
@@ -130,7 +128,6 @@ const AddActivity = () => {
           <FormLabel>
             {isIncome ? "Detail Pemasukan" : "Detail Pengeluaran"}
           </FormLabel>
-          {/* <FormLabel>Email</FormLabel> */}
           <Input
             id="detail"
             name="detail"
@@ -161,53 +158,66 @@ const AddActivity = () => {
           </FormLabel>
           {isIncome ? (
             <>
-            <Select
-              placeholder="Select option"
-              mb={inputState.spesificType === 'Other Income' ? '0px' : '15px' }
-              id="spesificType"
-              name="spesificType"
-              value={inputState.spesificType}
-              onChange={handleChange}
-            >
-              <option value="Given">Given</option>
-              <option value="Monthly Allowance">Monthly Allowance</option>
-              <option value="Other Income">Other Income</option>
-            </Select>
-            {inputState.spesificType === 'Other Income' ? 
-            <Input 
-            mb="15px"
-             />
-             : null}
+              <Select
+                placeholder="Select option"
+                mb={inputState.spesificType === "Other Income" ? "8px" : "15px"}
+                id="spesificType"
+                name="spesificType"
+                value={inputState.spesificType}
+                onChange={handleChange}
+              >
+                <option value="Given">Given</option>
+                <option value="Monthly Allowance">Monthly Allowance</option>
+                <option value="Other Income">Other Income</option>
+              </Select>
+              {inputState.spesificType === "Other Income" ? (
+                <Input
+                  mb="15px"
+                  id="spesificTypeOther"
+                  name="spesificTypeOther"
+                  type="text"
+                  value={inputState.spesificTypeOther}
+                  onChange={handleChange}
+                  placeholder="Other Income"
+                />
+              ) : null}
             </>
           ) : (
-            <Select
-              placeholder="Select option"
-              mb="15px"
-              id="spesificType"
-              name="spesificType"
-              value={inputState.spesificType}
-              onChange={handleChange}
-            >
-              <option value="Food">Food</option>
-              <option value="Gas">Gas</option>
-              <option value="Coffee">Coffee</option>
-              <option value="Needs">Needs</option>
-              <option value="Giving">Giving</option>
-              <option value="Subscription">Subscription</option>
-              <option value="Sport">Sport</option>
-              <option value="Debt">Debt</option>
-              <option value="Online Shopping">Online Shopping</option>
-              <option value="Other Outcome">Other Outcome</option>
-            </Select>
+            <>
+              <Select
+                placeholder="Select option"
+                mb={
+                  inputState.spesificType === "Other Outcome" ? "8px" : "15px"
+                }
+                id="spesificType"
+                name="spesificType"
+                value={inputState.spesificType}
+                onChange={handleChange}
+              >
+                <option value="Food">Food</option>
+                <option value="Gas">Gas</option>
+                <option value="Coffee">Coffee</option>
+                <option value="Needs">Needs</option>
+                <option value="Giving">Giving</option>
+                <option value="Subscription">Subscription</option>
+                <option value="Sport">Sport</option>
+                <option value="Debt">Debt</option>
+                <option value="Online Shopping">Online Shopping</option>
+                <option value="Other Outcome">Other Outcome</option>
+              </Select>
+              {inputState.spesificType === "Other Outcome" ? (
+                <Input
+                  mb="15px"
+                  id="spesificTypeOther"
+                  name="spesificTypeOther"
+                  type="text"
+                  value={inputState.spesificTypeOther}
+                  onChange={handleChange}
+                  placeholder="Other Outcome"
+                />
+              ) : null}
+            </>
           )}
-          {/* <Input
-            id="spesificType"
-            name="spesificType"
-            type="text"
-            value={inputState.spesificType}
-            onChange={handleChange}
-            mb="15px"
-          /> */}
         </FormControl>
         <FormControl>
           <FormLabel>Deskripsi Tambahan</FormLabel>
