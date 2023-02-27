@@ -2,7 +2,6 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import AddActivity from "./pages/Dashboard/Features/AddActivity";
 import {
   createBrowserRouter,
-  createHashRouter,
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from "./pages/Error/ErrorPage";
