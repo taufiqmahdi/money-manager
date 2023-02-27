@@ -9,7 +9,6 @@ A web application I personally create to ease me in organizing my financial acti
 * Protect your data with ability to use the app using your personal account and is modifiable
 * Instantly add your income or spending in just a click away on your dashboard page
 * View all your cashflow data and filter them by date
-* 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
