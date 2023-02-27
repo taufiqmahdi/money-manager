@@ -20,8 +20,6 @@ import { useOutletContext } from "react-router-dom";
 const Cashflow = () => {
   const API_URL = "http://localhost:4001/api/cashflows/";
   const [user] = useOutletContext();
-  // console.log(user)
-
   const [cashflowContent, setCashflowContent] = useState([{}]);
 
   const getDate = () => {
@@ -36,9 +34,6 @@ const Cashflow = () => {
     const today = year + "-" + month + "-" + day;
     const firstDayOfThisMonth = year + "-" + month + "-01";
 
-    // month = date.toLocaleString("en-US", { month: "long" });
-    // console.log('date', day, 'month', month, 'year', year)
-    // console.log(today)
     return { firstDayOfThisMonth, today };
   };
 
@@ -55,37 +50,7 @@ const Cashflow = () => {
       ...initialFilterState,
       [e.target.name]: value,
     });
-
-    // const months = {
-    //   January: "01",
-    //   February: "02",
-    //   March: "03",
-    //   April: "04",
-    //   May: "05",
-    //   June: "06",
-    //   July: "07",
-    //   August: "08",
-    //   September: "09",
-    //   October: "10",
-    //   November: "11",
-    //   December: "12",
-    // };
   };
-
-  // const months = {
-  //   January: "01",
-  //   February: "02",
-  //   March: "03",
-  //   April: "04",
-  //   May: "05",
-  //   June: "06",
-  //   July: "07",
-  //   August: "08",
-  //   September: "09",
-  //   October: "10",
-  //   November: "11",
-  //   December: "12",
-  // };
 
   const filterCashflow = async () => {
     var myHeaders = new Headers();
@@ -108,31 +73,7 @@ const Cashflow = () => {
     const response = await fetch(API_URL + "cashflow", requestOptions);
     const data = await response.json();
     setCashflowContent(data);
-    // return data;
   };
-
-  useEffect(() => {
-    // const getCashflowContent = async () => {
-    //   var myHeaders = new Headers();
-    //   myHeaders.append("Content-Type", "application/json");
-    //   var raw = JSON.stringify({
-    //     email: user.email,
-    //     token: user.token,
-    //   });
-    //   var requestOptions = {
-    //     method: "POST",
-    //     headers: myHeaders,
-    //     body: raw,
-    //     redirect: "follow",
-    //   };
-    //   const response = await fetch(
-    //     "http://localhost:4001/cashflow",
-    //     requestOptions
-    //   );
-    //   const data = await response.json();
-    //   setCashflowContent(data);
-    // };
-  }, []);
 
   useEffect(() => {
     filterCashflow();
@@ -147,7 +88,6 @@ const Cashflow = () => {
         </Heading>
       </Flex>
       <Flex
-        // maxW="100%"
         w="fit-content"
         bgColor="white"
         boxShadow="lg"
@@ -183,47 +123,9 @@ const Cashflow = () => {
               w="fit-content"
             />
           </Flex>
-          {/* <Flex mr="25px" direction="column">
-            Year
-            <Select
-              variant="flushed"
-              id="year"
-              name="year"
-              value={initialFilterState.year}
-              onChange={handleChange}
-            >
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-            </Select>
-          </Flex>
-          <Flex direction="column">
-            Month
-            <Select
-              variant="flushed"
-              id="month"
-              name="month"
-              value={initialFilterState.month}
-              onChange={handleChange}
-            >
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
-            </Select>
-          </Flex> */}
         </Flex>
         <TableContainer>
           <Table variant="simple">
-            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
             <Thead>
               <Tr>
                 <Th textAlign="center">Detail</Th>
@@ -236,7 +138,6 @@ const Cashflow = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {/* <Tr> */}
               {cashflowContent.map((cashflowContent) => (
                 <Tr key={[cashflowContent._id]}>
                   <Td className="detail">{cashflowContent.detail}</Td>
@@ -256,30 +157,13 @@ const Cashflow = () => {
                   </Td>
                 </Tr>
               ))}
-              {/* <Td className="detail">{cashflowContent[0].detail}</Td>
-                <Td className="cashflowType">{cashflowContent[0].cashflowType}</Td>
-                <Td className="cashflowTypeDetail">{cashflowContent[0].cashflowTypeDetail}</Td>
-                <Td className="amount" isNumeric>
-                  Rp {cashflowContent[0].amount}
-                </Td>
-                <Td className="description">{cashflowContent[0].description}</Td>
-                <Td className="date">{cashflowContent[0].date}</Td>
-                <Td className="balance" isNumeric>
-                  Rp {cashflowContent[0].balance}
-                </Td> */}
-              {/* </Tr> */}
             </Tbody>
             <Tfoot>
-              <Tr>
-                {/* <Th>To convert</Th>
-                <Th>into</Th>
-                <Th isNumeric>multiply by</Th> */}
-              </Tr>
+              <Tr></Tr>
             </Tfoot>
           </Table>
         </TableContainer>
       </Flex>
-      {/* <Outlet context={[ isEditProfileModalOpen, setIsEditProfileModalOpen, user, token, getUserData ]} /> */}
     </Flex>
   );
 };
