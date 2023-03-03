@@ -81,14 +81,14 @@ const Cashflow = () => {
   }, [initialFilterState]);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" w="100%">
       <Flex mb="25px">
         <Heading as="h2" size="md">
           Cashflow
         </Heading>
       </Flex>
       <Flex
-        w="fit-content"
+        w="100%"
         bgColor="white"
         boxShadow="lg"
         p="25px"
@@ -124,7 +124,7 @@ const Cashflow = () => {
             />
           </Flex>
         </Flex>
-        <TableContainer>
+        <TableContainer overflowX="scroll">
           <Table variant="simple">
             <Thead>
               <Tr>
