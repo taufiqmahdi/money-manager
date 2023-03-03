@@ -53,7 +53,7 @@ const MainPage = () => {
             </Button>
           </Link>
           <Link to="/add/outcome">
-            <Button onClick={() => {}}>Add an spending</Button>
+            <Button onClick={() => {}}>Add a spending</Button>
           </Link>
         </Flex>
         <Flex></Flex>
