@@ -9,7 +9,6 @@ import MainPage from "./pages/Dashboard/MainPage";
 import Profile from "./pages/Dashboard/Profile/Profile";
 import LoginNew from "./pages/Login";
 import RequireAuth from "./pages/Dashboard/Authentication/RequireAuth";
-import EditProfileModal from "./pages/Modal/EditProfileModal";
 import Cashflow from "./pages/Dashboard/Cashflow/Cashflow";
 
 function App() {
@@ -33,12 +32,6 @@ function App() {
             {
               path: "profile",
               element: <Profile />,
-              children: [
-                {
-                  index: true,
-                  element: <EditProfileModal />,
-                },
-              ],
             },
             {
               path: "cashflow",

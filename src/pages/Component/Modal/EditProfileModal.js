@@ -12,14 +12,29 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const EditProfileModal = () => {
-  const API_URL = "http://localhost:4001/api/users/"
-  const [isModalOpen, setIsModalOpen, user, getUserData] = //token, getUserData] =
-    useOutletContext();
+const EditProfileModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  user,
+  getUserData,
+}) => {
+  const navigate = useNavigate();
+  const API_URL = "http://localhost:4001/api/users/";
+  // const [
+  //   isModalOpen,
+  //   setIsModalOpen,
+  //   isModalPasswordOpen,
+  //   setIsModalPasswordOpen,
+  //   user,
+  //   getUserData,
+  // ] = useOutletContext(); //token, getUserData] =
   const handleModalOpenChange = (value) => {
     setIsModalOpen(value);
+    // if (value == false) {
+    //   navigate("/profile");
+    // }
   };
 
   const initialUserState = {
@@ -111,78 +126,63 @@ const EditProfileModal = () => {
   // useMemo;
 
   return (
-    <>
-      <Modal isOpen={isModalOpen} onClose={() => handleModalOpenChange(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <form onSubmit={handleSubmit}>
-            <ModalHeader>Edit Profile</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <FormControl>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={inputState.username}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>First Name</FormLabel>
-                <Input
-                  type="text"
-                  name="firstName"
-                  placeholder="First Name"
-                  value={inputState.firstName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Last Name</FormLabel>
-                <Input
-                  type="text"
-                  name="lastName"
-                  placeholder="Last Name"
-                  value={inputState.lastName}
-                  onChange={handleChange}
-                />
-              </FormControl>
-              {/* <FormControl>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={inputState.email}
-                  onChange={handleChange}
-                />
-              </FormControl> */}
-              {/* <Flex mt={4} gap={4}>
-                
-              </Flex> */}
-            </ModalBody>
+    <Modal isOpen={isModalOpen} onClose={() => handleModalOpenChange(false)}>
+      <ModalOverlay />
+      <ModalContent>
+        <form onSubmit={handleSubmit}>
+          <ModalHeader>Edit Profile</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={inputState.username}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={4} isRequired>
+              <FormLabel>First Name</FormLabel>
+              <Input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={inputState.firstName}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl mt={4} isRequired>
+              <FormLabel>Last Name</FormLabel>
+              <Input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={inputState.lastName}
+                onChange={handleChange}
+              />
+            </FormControl>
+          </ModalBody>
 
-            <ModalFooter>
-              <Button type="submit" mr={4}>
-                {/* {isLoading ? (
+          <ModalFooter>
+            <Button type="submit" mr={4}>
+              {/* {isLoading ? (
                 <CircularProgress isIndeterminate size="24px" color="teal" />
               ) : ( */}
-                Save Changes
-                {/* )} */}
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => handleModalOpenChange(false)}
-              >
-                Cancel
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
-    </>
+              Save Changes
+              {/* )} */}
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={() => handleModalOpenChange(false)}
+            >
+              Cancel
+            </Button>
+          </ModalFooter>
+        </form>
+      </ModalContent>
+    </Modal>
   );
 };
 
