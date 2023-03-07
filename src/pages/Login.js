@@ -155,7 +155,7 @@ const Login = () => {
     } else {
       setIsPasswordNotSame(false);
     }
-  }, [isError, user, navigate, from, inputState, isPasswordNotSame]);
+  }, [isError, user, navigate, from, inputState, isPasswordNotSame, isLogin]);
 
   return (
     <Flex bgColor="blue.100" h="100vh" align="center" justify="center">
@@ -274,7 +274,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl isRequired isInvalid={isPasswordNotSame}>
+              <FormControl isRequired>
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
@@ -283,9 +283,6 @@ const Login = () => {
                   placeholder="*******"
                   onChange={handleChange}
                 />
-                {!isPasswordNotSame ? null : (
-                  <FormErrorMessage>Password doesn't match</FormErrorMessage>
-                )}
               </FormControl>
               <FormControl isRequired isInvalid={isPasswordNotSame}>
                 <FormLabel>Repeat Password</FormLabel>
