@@ -7,6 +7,7 @@ import {
   // useLocation,
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import Navbar from "../Component/Navbar";
 
 const Dashboard = () => {
   const API_URL = "http://localhost:4001/api/users/";
@@ -16,10 +17,18 @@ const Dashboard = () => {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isError, setIsError] = useState(false);
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
   // user = user ? user : null;
   // user = user ? user : null;
   // console.log(user);
+  const handleUserChange = (user) => {
+    setUser(user);
+  };
+
+  // const handleSidebarOpenChange = (value) => {
+  //   setIsSidebarOpen(value);
+  // };
 
   const getUserData = async () => {
     var myHeaders = new Headers();
@@ -72,154 +81,32 @@ const Dashboard = () => {
       //|| token) {
       getUserData();
     }
-    
+
     document.title = "Money Manager";
     // eslint-disable-next-line
   }, []);
 
   return (
-    <Flex direction="row" bgColor="blue.100">
+    <Flex
+      direction="row"
+      bgColor="blue.100"
+      // minW="100vw"
+      w="100%"
+      minH="100vh"
+      h="100%"
+    >
+      <Navbar
+        user={user}
+        onUserChange={handleUserChange}
+        // onSidebarChange={handleSidebarOpenChange}
+        // isSidebarOpen={isSidebarOpen}
+      />
       <Flex
-        className="navbar"
-        align="center"
-        bgColor="white"
-        justify="space-between"
-        maxW="200px"
-        h="100vh"
         direction="column"
-        boxShadow="lg"
+        w="100%"
+        pl={{ base: "0px", lg: "175px" }}
+        pt={{ base: "75px", lg: "75px" }}
       >
-        <Flex direction="column" w="100%" align="center" h="100%">
-          <Flex
-            align="center"
-            justify="center"
-            fontSize="lg"
-            m={4}
-            borderRadius={8}
-            h="75px"
-          >
-            <Link to="/">
-              <Image
-                src="icon.png"
-                alt="mm-icon"
-                fit="contain"
-                h="45px"
-                w="45px"
-                mr="10px"
-              />
-            </Link>
-            <Link to="/">
-              <Heading as="h3" size="xs">
-                Money Manager
-              </Heading>
-            </Link>
-          </Flex>
-          <Divider w="70%" my="10px" />
-          <Flex direction="column" w="100%" h="100%" justify="flex-start">
-            <Flex direction="column" w="100%">
-              <Link to="/">
-                <Flex
-                  p="15px"
-                  mx={4}
-                  // borderRadius={8}
-                  h="3rem"
-                  align="center"
-                  justify="flex-start"
-                >
-                  <Heading as="h3" size="sm">
-                    Home
-                  </Heading>
-                </Flex>
-              </Link>
-            </Flex>
-            <Flex direction="column" w="100%">
-              <Link to="/cashflow">
-                <Flex
-                  p="15px"
-                  mx={4}
-                  // borderRadius={8}
-                  h="3rem"
-                  align="center"
-                  justify="flex-start"
-                >
-                  <Heading as="h3" size="sm">
-                    Cashflow
-                  </Heading>
-                </Flex>
-              </Link>
-            </Flex>
-            <Flex direction="column" w="100%">
-              <Link to="/profile">
-                <Flex
-                  p="15px"
-                  mx={4}
-                  // borderRadius={8}
-                  h="3rem"
-                  align="center"
-                  justify="flex-start"
-                >
-                  <Heading as="h3" size="sm">
-                    Profile
-                  </Heading>
-                </Flex>
-              </Link>
-            </Flex>
-          </Flex>
-          <Flex direction="column" w="100%" h="100%" justify="flex-end">
-            {/* <Link to="/login"> */}
-            <Flex
-              as="button"
-              p="15px"
-              m={4}
-              // borderRadius={8}
-              h="3rem"
-              align="center"
-              justify="flex-start"
-              onClick={logout}
-            >
-              <Heading as="h3" size="sm">
-                Logout
-              </Heading>
-            </Flex>
-            {/* </Link> */}
-          </Flex>
-        </Flex>
-      </Flex>
-      <Flex direction="column" w="100%">
-        <Flex
-          bgColor="gray.100"
-          align="center"
-          justify="space-between"
-          h="75px"
-          p="25px"
-        >
-          <Flex fontSize="xl" fontWeight="bold">
-            Hello, {user.firstName + " " + user.lastName}
-          </Flex>
-          <Flex align="center">
-            <Flex
-              mr="15px"
-              h="45px"
-              w="45px"
-              borderRadius="8px"
-              bgColor="white"
-              align="center"
-              justify="center"
-            >
-              <BellIcon w="25px" h="25px" />
-            </Flex>
-            <Flex mr="15px">{user.firstName + " " + user.lastName}</Flex>
-            <Flex>
-              <Avatar
-                name={user.firstName + " " + user.lastName}
-                // src="https://bit.ly/dan-abramov"
-                borderRadius="8px"
-                h="45px"
-                w="45px"
-              />
-            </Flex>
-          </Flex>
-        </Flex>
         <Flex className="main" p="25px" direction="column">
           <Outlet context={[user, getUserData]} /> {/*token*/}
         </Flex>

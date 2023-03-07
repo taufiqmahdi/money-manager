@@ -10,12 +10,14 @@ const MainPage = () => {
   useEffect(() => {
     getUserData();
     // eslint-disable-next-line
-  }, [])
-  
+  }, []);
+
   return (
     <Flex direction="column">
       <Flex mb="25px">
-        <Heading as='h2' size='md'>Home</Heading>
+        <Heading as="h2" size="md">
+          Home
+        </Heading>
       </Flex>
       <Flex
         // minW="100%"
@@ -24,7 +26,7 @@ const MainPage = () => {
         boxShadow="lg"
         p="25px"
         borderRadius="8px"
-        w='fit-content'
+        w="fit-content"
       >
         {/* <Flex mb="25px">
         Hi,&#160;
@@ -36,8 +38,7 @@ const MainPage = () => {
         <Flex mb="25px">
           You have&nbsp;
           <Text as="span" fontWeight="bold">
-          Rp. {!user.balance ? 0 : user.balance
-          }
+            Rp. {!user.balance ? 0 : user.balance}
           </Text>
         </Flex>
         {/* <Flex mb="25px">
@@ -53,7 +54,7 @@ const MainPage = () => {
             </Button>
           </Link>
           <Link to="/add/outcome">
-            <Button onClick={() => {}}>Add an spending</Button>
+            <Button onClick={() => {}}>Add a spending</Button>
           </Link>
         </Flex>
         <Flex></Flex>

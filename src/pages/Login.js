@@ -11,6 +11,8 @@ import {
   Button,
   CircularProgress,
   Link,
+  SimpleGrid,
+  GridItem,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -26,6 +28,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isLogin, setIsLogin] = useState(true);
+  const [isPasswordNotSame, setIsPasswordNotSame] = useState(false);
 
   const initialInputState = {
     email: "",
@@ -33,11 +36,13 @@ const Login = () => {
     firstName: "",
     lastName: "",
     password: "",
+    repeatPassword: "",
   };
 
   const [inputState, setInputState] = useState(initialInputState);
 
   const handleChange = (e) => {
+    setIsError(false);
     const value = e.target.value;
     setInputState({
       ...inputState,
@@ -64,10 +69,7 @@ const Login = () => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      API_URL,
-      requestOptions
-    );
+    const response = await fetch(API_URL, requestOptions);
 
     try {
       let data = await response.json();
@@ -94,10 +96,7 @@ const Login = () => {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      API_URL + "login",
-      requestOptions
-    );
+    const response = await fetch(API_URL + "login", requestOptions);
 
     try {
       let data = await response.json();
@@ -117,18 +116,31 @@ const Login = () => {
       setIsLoading(false);
       return;
     }
+    if (isPasswordNotSame) {
+      setIsError(true);
+      setIsLoading(false);
+      return;
+    }
     const data = await register();
     setUser(data);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    document.title = "Login - Money Manager"
- }, []);
+    document.title = "Log In - Money Manager";
+  }, []);
 
   useEffect(() => {
     if (isError) {
-      <FormErrorMessage>Wrong Email / Password</FormErrorMessage>;
+      if (isLogin) {
+        <FormErrorMessage>Wrong Email / Password</FormErrorMessage>;
+        return;
+      }
+      <FormErrorMessage>Email already exists</FormErrorMessage>;
+    }
+
+    if (isPasswordNotSame) {
+      <FormErrorMessage>Password doesn't match</FormErrorMessage>;
     }
 
     if (!user) {
@@ -137,17 +149,17 @@ const Login = () => {
     if (user) {
       navigate(from, { replace: true });
     }
-  }, [isError, user, navigate, from]);
+
+    if (inputState.password !== inputState.repeatPassword) {
+      setIsPasswordNotSame(true);
+    } else {
+      setIsPasswordNotSame(false);
+    }
+  }, [isError, user, navigate, from, inputState, isPasswordNotSame, isLogin]);
 
   return (
     <Flex bgColor="blue.100" h="100vh" align="center" justify="center">
-      <Flex
-        bgColor="white"
-        maxWidth="1000px"
-        p="50px"
-        maxH="500px"
-        borderRadius="8px"
-      >
+      <Flex bgColor="white" maxWidth="1000px" p="50px" borderRadius="8px">
         <Flex mr="50px">
           <Image
             src="frontpage.jpg"
@@ -158,15 +170,17 @@ const Login = () => {
         </Flex>
         <Divider orientation="vertical" mr="50px" />
         <Flex p="8px" align="center" justify="center" direction="column">
-          <Box
-            p="8px"
-            mb="8px"
-            align="center"
-            justify="center"
-            display={isLogin ? "block" : "none"}
-          >
+          <Box p="8px" mb="8px" align="center" justify="center">
             <Image src="icon.png" alt="icon-mm" maxH="50px" />
-            <Heading size="md">Money Manager</Heading>
+            <Heading size="md" mb="12px">
+              Money Manager
+            </Heading>
+            <Heading size="sm" display={isLogin ? "block" : "none"}>
+              Login
+            </Heading>
+            <Heading size="sm" display={isLogin ? "none" : "block"}>
+              Register
+            </Heading>
           </Box>
           <Box display={isLogin ? "block" : "none"} className="login-form">
             <form onSubmit={handleSubmit}>
@@ -192,7 +206,7 @@ const Login = () => {
                 <FormErrorMessage>Wrong Email / Password</FormErrorMessage>
               </FormControl>
               <Button
-                width="full"
+                width="100%"
                 type="submit"
                 mt={4}
                 bgColor="indigo"
@@ -208,28 +222,38 @@ const Login = () => {
             </form>
           </Box>
 
-          <Box display={isLogin ? "none" : "block"} className="register-form">
-            <form onSubmit={handleSubmit}>
-              <FormControl isRequired>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  name="email"
-                  value={inputState.email}
-                  placeholder="test@test.com"
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  type="text"
-                  name="username"
-                  value={inputState.username}
-                  placeholder="username"
-                  onChange={handleChange}
-                />
-              </FormControl>
+          <form onSubmit={handleSubmit}>
+            <SimpleGrid
+              columns={2}
+              spacing={6}
+              display={isLogin ? "none" : "grid"}
+              className="register-form"
+            >
+              <GridItem colSpan={2}>
+                <FormControl isRequired isInvalid={isError}>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={inputState.email}
+                    placeholder="test@test.com"
+                    onChange={handleChange}
+                  />
+                  <FormErrorMessage>Email already exists</FormErrorMessage>
+                </FormControl>
+              </GridItem>
+              <GridItem colSpan={2}>
+                <FormControl isRequired>
+                  <FormLabel>Username</FormLabel>
+                  <Input
+                    type="text"
+                    name="username"
+                    value={inputState.username}
+                    placeholder="username"
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </GridItem>
               <FormControl isRequired>
                 <FormLabel>First Name</FormLabel>
                 <Input
@@ -250,7 +274,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <FormControl isRequired isInvalid={isError}>
+              <FormControl isRequired>
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
@@ -260,22 +284,40 @@ const Login = () => {
                   onChange={handleChange}
                 />
               </FormControl>
-              <Button
-                width="full"
-                type="submit"
-                mt={4}
-                bgColor="indigo"
-                color="white"
-                _hover={{ bg: "blue.500" }}
-              >
-                {isLoading ? (
-                  <CircularProgress isIndeterminate size="24px" color="teal" />
-                ) : (
-                  "Sign Up"
+              <FormControl isRequired isInvalid={isPasswordNotSame}>
+                <FormLabel>Repeat Password</FormLabel>
+                <Input
+                  type="password"
+                  name="repeatPassword"
+                  value={inputState.repeatPassword}
+                  placeholder="*******"
+                  onChange={handleChange}
+                />
+                {!isPasswordNotSame ? null : (
+                  <FormErrorMessage>Password doesn't match</FormErrorMessage>
                 )}
-              </Button>
-            </form>
-          </Box>
+              </FormControl>
+              <GridItem colSpan={2}>
+                <Button
+                  width="100%"
+                  type="submit"
+                  bgColor="indigo"
+                  color="white"
+                  _hover={{ bg: "blue.500" }}
+                >
+                  {isLoading ? (
+                    <CircularProgress
+                      isIndeterminate
+                      size="24px"
+                      color="teal"
+                    />
+                  ) : (
+                    "Sign Up"
+                  )}
+                </Button>
+              </GridItem>
+            </SimpleGrid>
+          </form>
 
           <Box mt="8px" hidden={isLogin ? false : true}>
             Don't have an account?&nbsp;
@@ -283,6 +325,7 @@ const Login = () => {
               textColor="blue.400"
               onClick={() => {
                 setIsLogin(false);
+                setIsError(false);
                 setInputState(initialInputState);
               }}
             >
@@ -296,6 +339,7 @@ const Login = () => {
               textColor="blue.400"
               onClick={() => {
                 setIsLogin(true);
+                setIsError(false);
                 setInputState(initialInputState);
               }}
             >
