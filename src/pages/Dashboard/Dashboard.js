@@ -17,6 +17,7 @@ const Dashboard = () => {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [isError, setIsError] = useState(false);
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
   // user = user ? user : null;
   // user = user ? user : null;
@@ -24,6 +25,10 @@ const Dashboard = () => {
   const handleUserChange = (user) => {
     setUser(user);
   };
+
+  // const handleSidebarOpenChange = (value) => {
+  //   setIsSidebarOpen(value);
+  // };
 
   const getUserData = async () => {
     var myHeaders = new Headers();
@@ -85,19 +90,24 @@ const Dashboard = () => {
     <Flex
       direction="row"
       bgColor="blue.100"
-      minW="100vw"
+      // minW="100vw"
       w="100%"
       minH="100vh"
       h="100%"
     >
-      <Navbar user={user} onUserChange={handleUserChange} />
+      <Navbar
+        user={user}
+        onUserChange={handleUserChange}
+        // onSidebarChange={handleSidebarOpenChange}
+        // isSidebarOpen={isSidebarOpen}
+      />
       <Flex
         direction="column"
         w="100%"
-        pl={{ base: "0px", lg: "200px" }}
-        pt={{ base: "0px", lg: "75px" }}
+        pl={{ base: "0px", lg: "175px" }}
+        pt={{ base: "75px", lg: "75px" }}
       >
-        <Flex className="main" p="35px" direction="column">
+        <Flex className="main" p="25px" direction="column">
           <Outlet context={[user, getUserData]} /> {/*token*/}
         </Flex>
       </Flex>
