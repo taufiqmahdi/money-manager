@@ -95,7 +95,12 @@ const Cashflow = () => {
         borderRadius="8px"
         direction="column"
       >
-        <Flex className="filter-cashflow" mb="25px">
+        <Flex
+          className="filter-cashflow"
+          mb="25px"
+          gap={{ base: "10px", sm: "0" }}
+          direction={{ base: "column", sm: "row" }}
+        >
           <Flex direction="column">
             <FormLabel>Start Date</FormLabel>
             <Input
@@ -124,22 +129,23 @@ const Cashflow = () => {
             />
           </Flex>
         </Flex>
-        <TableContainer overflowX="scroll">
+        <TableContainer>
           <Table variant="simple">
             <Thead>
               <Tr>
+                <Th textAlign="center">Date</Th>
                 <Th textAlign="center">Detail</Th>
                 <Th textAlign="center">Cashflow Type</Th>
                 <Th textAlign="center">Cashflow Type Detail</Th>
                 <Th textAlign="center">Amount</Th>
                 <Th textAlign="center">Description</Th>
-                <Th textAlign="center">Date</Th>
                 <Th textAlign="center">Balance</Th>
               </Tr>
             </Thead>
             <Tbody>
               {cashflowContent.map((cashflowContent) => (
                 <Tr key={[cashflowContent._id]}>
+                  <Td className="date">{cashflowContent.date}</Td>
                   <Td className="detail">{cashflowContent.detail}</Td>
                   <Td className="cashflowType">
                     {cashflowContent.cashflowType}
@@ -151,7 +157,6 @@ const Cashflow = () => {
                     Rp {cashflowContent.amount}
                   </Td>
                   <Td className="description">{cashflowContent.description}</Td>
-                  <Td className="date">{cashflowContent.date}</Td>
                   <Td className="balance" isNumeric>
                     Rp {cashflowContent.balance}
                   </Td>
