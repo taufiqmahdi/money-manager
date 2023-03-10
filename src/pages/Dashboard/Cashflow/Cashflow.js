@@ -1,4 +1,10 @@
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@chakra-ui/icons";
+import {
   Flex,
   Heading,
   Table,
@@ -20,7 +26,23 @@ import { useOutletContext } from "react-router-dom";
 const Cashflow = () => {
   const API_URL = "http://localhost:4001/api/cashflows/";
   const [user] = useOutletContext();
+  const [cashflowContentWithoutPage, setCashflowContentWithoutPage] = useState([
+    {},
+  ]);
   const [cashflowContent, setCashflowContent] = useState([{}]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+  const pageNumbers = [];
+
+  const handlePageNumberChange = (pageNumber) => {
+    if (pageNumber < 1) {
+      return;
+    }
+    if (pageNumber > pageNumbers.length) {
+      return;
+    }
+    setCurrentPage(pageNumber);
+  };
 
   const getDate = () => {
     var date = new Date();
@@ -72,13 +94,46 @@ const Cashflow = () => {
 
     const response = await fetch(API_URL + "cashflow", requestOptions);
     const data = await response.json();
+    setCashflowContentWithoutPage(data);
+  };
+
+  const filterCashflowByPage = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      email: user.email,
+      token: user.token,
+      startDate: initialFilterState.startDate,
+      endDate: initialFilterState.endDate,
+      page: currentPage,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const response = await fetch(API_URL + "cashflow-page", requestOptions);
+    const data = await response.json();
     setCashflowContent(data);
   };
 
   useEffect(() => {
     filterCashflow();
+    filterCashflowByPage();
     // eslint-disable-next-line
-  }, [initialFilterState]);
+  }, [initialFilterState, currentPage]);
+
+  for (
+    let i = 1;
+    i <= Math.ceil(cashflowContentWithoutPage.length / postsPerPage);
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
 
   return (
     <Flex direction="column" w="100%">
@@ -168,6 +223,43 @@ const Cashflow = () => {
             </Tfoot>
           </Table>
         </TableContainer>
+        <Flex mt="25px" p={6} align="center" justify="end">
+          <ArrowLeftIcon
+            onClick={() => handlePageNumberChange(1)}
+            opacity={currentPage === 1 ? "25%" : "100%"}
+            _hover={currentPage === 1 ? { cursor: "default" } : { cursor: "pointer" }}
+          />
+          <ChevronLeftIcon
+            onClick={() => handlePageNumberChange(currentPage - 1)}
+            opacity={currentPage === 1 ? "25%" : "100%"}
+            boxSize={7}
+            _hover={currentPage === 1 ? { cursor: "default" } : { cursor: "pointer" }}
+          />
+          {pageNumbers.map((number) => (
+            <Flex
+              mx={2}
+              key={number}
+              onClick={() => handlePageNumberChange(number)}
+              className="page-number"
+              _hover={currentPage === number ? { cursor: "default" } : { cursor: "pointer" }}
+              fontSize="lg"
+              fontWeight={number === currentPage ? "bold" : "normal"}
+            >
+              {number}
+            </Flex>
+          ))}
+          <ChevronRightIcon
+            onClick={() => handlePageNumberChange(currentPage + 1)}
+            opacity={currentPage === pageNumbers.length ? "25%" : "100%"}
+            boxSize={7}
+            _hover={currentPage === pageNumbers.length ? { cursor: "default" } : { cursor: "pointer" }}
+          />
+          <ArrowRightIcon
+            onClick={() => handlePageNumberChange(pageNumbers.length)}
+            opacity={currentPage === pageNumbers.length ? "25%" : "100%"}
+            _hover={currentPage === pageNumbers.length ? { cursor: "default" } : { cursor: "pointer" }}
+          />
+        </Flex>
       </Flex>
     </Flex>
   );
